@@ -200,6 +200,7 @@ async def export_excel(message: types.Message):
     if os.path.exists(file_path):
         os.remove(file_path)
 
+# --- TUZATILGAN BO'LIM (RO'YXATNI BO'LIB YUBORISH) ---
 @dp.message(F.text == "📞 Ro'yxatdan o'tganlar raqamlari")
 async def show_users_list(message: types.Message):
     if message.from_user.id != ADMIN_ID:
@@ -207,20 +208,27 @@ async def show_users_list(message: types.Message):
 
     users = get_all_users()
     if not users:
-        await message.answer("📁 Hozircha ro'yxatdan o'tgan foydalanuvchilar yo'q.")
+        await message.answer("📁 Hozircha ro'yxatdan o'tgan foydalanuvchilar yo meyo'q.")
         return
 
-    text = f"📋 **Ro'yxatdan o'tganlar ({len(users)} ta):**\n\n"
+    header = f"📋 **Ro'yxatdan o'tganlar ({len(users)} ta):**\n\n"
+    current_text = header
+
     for idx, u in enumerate(users, 1):
         u_id, name, uname, phone = u
-        text += f"{idx}. **{name}**\n   📱 Tel: `{phone}`\n   👤 User: {uname}\n   🆔 ID: `{u_id}`\n\n"
+        safe_name = str(name).replace("*", "").replace("_", "").replace("`", "")
+        safe_uname = str(uname).replace("*", "").replace("_", "").replace("`", "")
         
-        if len(text) > 3500:
-            await message.answer(text, parse_mode="Markdown")
-            text = ""
-            
-    if text:
-        await message.answer(text, parse_mode="Markdown")
+        user_info = f"{idx}. **{safe_name}**\n   📱 Tel: `{phone}`\n   👤 User: {safe_uname}\n   🆔 ID: `{u_id}`\n\n"
+        
+        if len(current_text) + len(user_info) > 3000:
+            await message.answer(current_text, parse_mode="Markdown")
+            current_text = user_info
+        else:
+            current_text += user_info
+
+    if current_text:
+        await message.answer(current_text, parse_mode="Markdown")
 
 @dp.message(F.text == "📊 Statistika")
 async def show_stats(message: types.Message):
