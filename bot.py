@@ -43,7 +43,7 @@ class AdminStates(StatesGroup):
 # DATABASE FUNCTIONS (Baza bilan ishlash)
 # ----------------------------------------------------
 def init_db():
-  conn = sqlite3.connect("bot_database.db")
+  conn = sqlite3.connect("new_bot_database.db")
   cursor = conn.cursor()
   cursor.execute("""
         CREATE TABLE IF NOT EXISTS users (
@@ -61,7 +61,7 @@ init_db()
 
 
 def get_all_users():
-  conn = sqlite3.connect("bot_database.db")
+  conn = sqlite3.connect("new_bot_database.db")
   cursor = conn.cursor()
   cursor.execute("SELECT user_id, full_name, phone_number, username FROM users")
   users = cursor.fetchall()
@@ -70,7 +70,7 @@ def get_all_users():
 
 
 def delete_user(user_id: int) -> bool:
-  conn = sqlite3.connect("bot_database.db")
+  conn = sqlite3.connect("new_bot_database.db")
   cursor = conn.cursor()
   cursor.execute("DELETE FROM users WHERE user_id = ?", (user_id,))
   changes = conn.total_changes
@@ -80,7 +80,7 @@ def delete_user(user_id: int) -> bool:
 
 
 def delete_all_users():
-  conn = sqlite3.connect("bot_database.db")
+  conn = sqlite3.connect("new_bot_database.db")
   cursor = conn.cursor()
   cursor.execute("DELETE FROM users")
   conn.commit()
@@ -309,3 +309,4 @@ async def main():
 
 if __name__ == "__main__":
   asyncio.run(main())
+
