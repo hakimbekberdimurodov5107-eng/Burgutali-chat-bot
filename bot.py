@@ -20,6 +20,8 @@ from aiogram.types import (
     ReplyKeyboardRemove,
 )
 
+BOT_VERSION = "v2_with_updated_keyboards"
+print(f"[STARTUP] Loading bot version: {BOT_VERSION}", flush=True)
 # --- KONFIGURATSIYA ---
 BOT_TOKEN = "8893922149:AAGZIV4N7y2bHEKGz3ucNK0dvHpF3R3XC8w"
 CHANNEL_USERNAME = "@burgutali"    # Kanal username
